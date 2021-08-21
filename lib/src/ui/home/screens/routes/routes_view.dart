@@ -6,15 +6,17 @@ import 'package:test_map/src/domain/models/user.dart' as models;
 import 'package:test_map/src/domain/utils/mappers.dart';
 import 'package:test_map/src/widgets/shimmers/container.dart';
 
-import 'bloc/route_bloc.dart';
-import 'bloc/route_state.dart';
+import 'bloc/route/route_bloc.dart';
+import 'bloc/routes_bloc.dart';
+import 'bloc/routes_state.dart';
 import 'route_detail_view.dart';
 
 final mockRoute = models.Route(
+    tags: [],
     id: 'id',
     name: 'Поход до Быков на реке Волхов',
     steps: [],
-    xp: 3000,
+    exp: 3000,
     duration: 30,
     description: 'Увлекательный маршрут для самых выносливых исследователей');
 
@@ -22,6 +24,11 @@ class RoutesView extends StatelessWidget {
   RoutesView({Key? key}) : super(key: key);
 
   final intervals = [15, 30, 60, 120];
+  final travelTypes = [
+    {'name': 'Пешком', 'image': 'assets/walk.png'},
+    {'name': 'Велосипед', 'image': 'assets/bike.png'},
+    {'name': 'Авто', 'image': 'assets/car.png'}
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -48,21 +55,23 @@ class RoutesView extends StatelessWidget {
                 ],
               ),
             ),
-            BlocBuilder<RouteCubit, RouteState>(
+            BlocBuilder<RoutesCubit, RoutesState>(
               builder: (context, state) {
-                if (state is RouteLoading) {
+                if (state is RoutesLoading) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: ContainerShimmer(height: 300),
                   );
-                } else if (state is RouteLoaded) {
+                } else if (state is RoutesLoaded) {
                   return Center(
                     child: CarouselSlider(
                         items: state.routes
                             .map((e) => RouteCard(route: e))
                             .toList(),
                         options: CarouselOptions(
-                            aspectRatio: 0.8, enlargeCenterPage: true)),
+                            enableInfiniteScroll: false,
+                            aspectRatio: 0.8,
+                            enlargeCenterPage: true)),
                   );
                 }
                 return Container();
@@ -97,27 +106,32 @@ class RoutesView extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('По длительности'),
+              child: Text('По средству передвижения'),
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                  children: intervals
+                  children: travelTypes
                       .map((e) => Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: Container(
                               height: 100,
                               width: 100,
                               decoration: BoxDecoration(
-                                  color: mapDurationToColor(e),
+                                  image: DecorationImage(
+                                      image: AssetImage(e['image']!)),
                                   borderRadius: BorderRadius.circular(8)),
-                              child: Center(
-                                  child: Text('$e минут',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 26))),
+                              child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Text(e['name']!,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16)),
+                                  )),
                             ),
                           ))
                       .toList()),
@@ -146,7 +160,10 @@ class _RouteCardState extends State<RouteCard> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => RouteDetailView(route: widget.route)));
+            builder: (_) => BlocProvider(
+                  create: (context) => RouteBloc()..loadRoute(widget.route.id),
+                  child: RouteDetailView(route: widget.route),
+                )));
       },
       child: Stack(
         clipBehavior: Clip.none,
@@ -182,7 +199,7 @@ class _RouteCardState extends State<RouteCard> {
                     backgroundColor: mapDurationToColor(widget.route.duration),
                   ),
                   Chip(
-                    label: Text('${widget.route.xp} XP',
+                    label: Text('${widget.route.exp} XP',
                         style: TextStyle(color: Colors.white)),
                     backgroundColor: Color(0xFFCF2F68),
                   )

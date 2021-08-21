@@ -397,6 +397,10 @@ abstract class _User implements User {
   _$UserCopyWith<_User> get copyWith => throw _privateConstructorUsedError;
 }
 
+Achievement _$AchievementFromJson(Map<String, dynamic> json) {
+  return _Achievement.fromJson(json);
+}
+
 /// @nodoc
 class _$AchievementTearOff {
   const _$AchievementTearOff();
@@ -415,6 +419,10 @@ class _$AchievementTearOff {
       icon: icon,
     );
   }
+
+  Achievement fromJson(Map<String, Object> json) {
+    return Achievement.fromJson(json);
+  }
 }
 
 /// @nodoc
@@ -428,6 +436,7 @@ mixin _$Achievement {
   int get exp => throw _privateConstructorUsedError;
   int get icon => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $AchievementCopyWith<Achievement> get copyWith =>
       throw _privateConstructorUsedError;
@@ -536,7 +545,7 @@ class __$AchievementCopyWithImpl<$Res> extends _$AchievementCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_Achievement with DiagnosticableTreeMixin implements _Achievement {
   const _$_Achievement(
       {required this.id,
@@ -544,6 +553,9 @@ class _$_Achievement with DiagnosticableTreeMixin implements _Achievement {
       required this.description,
       required this.exp,
       required this.icon});
+
+  factory _$_Achievement.fromJson(Map<String, dynamic> json) =>
+      _$_$_AchievementFromJson(json);
 
   @override
   final String id;
@@ -603,6 +615,11 @@ class _$_Achievement with DiagnosticableTreeMixin implements _Achievement {
   @override
   _$AchievementCopyWith<_Achievement> get copyWith =>
       __$AchievementCopyWithImpl<_Achievement>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_AchievementToJson(this);
+  }
 }
 
 abstract class _Achievement implements Achievement {
@@ -612,6 +629,9 @@ abstract class _Achievement implements Achievement {
       required String description,
       required int exp,
       required int icon}) = _$_Achievement;
+
+  factory _Achievement.fromJson(Map<String, dynamic> json) =
+      _$_Achievement.fromJson;
 
   @override
   String get id => throw _privateConstructorUsedError;
@@ -642,16 +662,18 @@ class _$RouteTearOff {
       required String name,
       required String description,
       required int duration,
-      required int xp,
-      required List<Step> steps,
+      required int exp,
+      List<Step>? steps,
+      required List<String> tags,
       List<Comment>? comments}) {
     return _Route(
       id: id,
       name: name,
       description: description,
       duration: duration,
-      xp: xp,
+      exp: exp,
       steps: steps,
+      tags: tags,
       comments: comments,
     );
   }
@@ -670,8 +692,9 @@ mixin _$Route {
   String get name => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   int get duration => throw _privateConstructorUsedError;
-  int get xp => throw _privateConstructorUsedError;
-  List<Step> get steps => throw _privateConstructorUsedError;
+  int get exp => throw _privateConstructorUsedError;
+  List<Step>? get steps => throw _privateConstructorUsedError;
+  List<String> get tags => throw _privateConstructorUsedError;
   List<Comment>? get comments => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -688,8 +711,9 @@ abstract class $RouteCopyWith<$Res> {
       String name,
       String description,
       int duration,
-      int xp,
-      List<Step> steps,
+      int exp,
+      List<Step>? steps,
+      List<String> tags,
       List<Comment>? comments});
 }
 
@@ -707,8 +731,9 @@ class _$RouteCopyWithImpl<$Res> implements $RouteCopyWith<$Res> {
     Object? name = freezed,
     Object? description = freezed,
     Object? duration = freezed,
-    Object? xp = freezed,
+    Object? exp = freezed,
     Object? steps = freezed,
+    Object? tags = freezed,
     Object? comments = freezed,
   }) {
     return _then(_value.copyWith(
@@ -728,14 +753,18 @@ class _$RouteCopyWithImpl<$Res> implements $RouteCopyWith<$Res> {
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
               as int,
-      xp: xp == freezed
-          ? _value.xp
-          : xp // ignore: cast_nullable_to_non_nullable
+      exp: exp == freezed
+          ? _value.exp
+          : exp // ignore: cast_nullable_to_non_nullable
               as int,
       steps: steps == freezed
           ? _value.steps
           : steps // ignore: cast_nullable_to_non_nullable
-              as List<Step>,
+              as List<Step>?,
+      tags: tags == freezed
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       comments: comments == freezed
           ? _value.comments
           : comments // ignore: cast_nullable_to_non_nullable
@@ -754,8 +783,9 @@ abstract class _$RouteCopyWith<$Res> implements $RouteCopyWith<$Res> {
       String name,
       String description,
       int duration,
-      int xp,
-      List<Step> steps,
+      int exp,
+      List<Step>? steps,
+      List<String> tags,
       List<Comment>? comments});
 }
 
@@ -774,8 +804,9 @@ class __$RouteCopyWithImpl<$Res> extends _$RouteCopyWithImpl<$Res>
     Object? name = freezed,
     Object? description = freezed,
     Object? duration = freezed,
-    Object? xp = freezed,
+    Object? exp = freezed,
     Object? steps = freezed,
+    Object? tags = freezed,
     Object? comments = freezed,
   }) {
     return _then(_Route(
@@ -795,14 +826,18 @@ class __$RouteCopyWithImpl<$Res> extends _$RouteCopyWithImpl<$Res>
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
               as int,
-      xp: xp == freezed
-          ? _value.xp
-          : xp // ignore: cast_nullable_to_non_nullable
+      exp: exp == freezed
+          ? _value.exp
+          : exp // ignore: cast_nullable_to_non_nullable
               as int,
       steps: steps == freezed
           ? _value.steps
           : steps // ignore: cast_nullable_to_non_nullable
-              as List<Step>,
+              as List<Step>?,
+      tags: tags == freezed
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       comments: comments == freezed
           ? _value.comments
           : comments // ignore: cast_nullable_to_non_nullable
@@ -819,8 +854,9 @@ class _$_Route with DiagnosticableTreeMixin implements _Route {
       required this.name,
       required this.description,
       required this.duration,
-      required this.xp,
-      required this.steps,
+      required this.exp,
+      this.steps,
+      required this.tags,
       this.comments});
 
   factory _$_Route.fromJson(Map<String, dynamic> json) =>
@@ -835,15 +871,17 @@ class _$_Route with DiagnosticableTreeMixin implements _Route {
   @override
   final int duration;
   @override
-  final int xp;
+  final int exp;
   @override
-  final List<Step> steps;
+  final List<Step>? steps;
+  @override
+  final List<String> tags;
   @override
   final List<Comment>? comments;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Route(id: $id, name: $name, description: $description, duration: $duration, xp: $xp, steps: $steps, comments: $comments)';
+    return 'Route(id: $id, name: $name, description: $description, duration: $duration, exp: $exp, steps: $steps, tags: $tags, comments: $comments)';
   }
 
   @override
@@ -855,8 +893,9 @@ class _$_Route with DiagnosticableTreeMixin implements _Route {
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('duration', duration))
-      ..add(DiagnosticsProperty('xp', xp))
+      ..add(DiagnosticsProperty('exp', exp))
       ..add(DiagnosticsProperty('steps', steps))
+      ..add(DiagnosticsProperty('tags', tags))
       ..add(DiagnosticsProperty('comments', comments));
   }
 
@@ -874,10 +913,12 @@ class _$_Route with DiagnosticableTreeMixin implements _Route {
             (identical(other.duration, duration) ||
                 const DeepCollectionEquality()
                     .equals(other.duration, duration)) &&
-            (identical(other.xp, xp) ||
-                const DeepCollectionEquality().equals(other.xp, xp)) &&
+            (identical(other.exp, exp) ||
+                const DeepCollectionEquality().equals(other.exp, exp)) &&
             (identical(other.steps, steps) ||
                 const DeepCollectionEquality().equals(other.steps, steps)) &&
+            (identical(other.tags, tags) ||
+                const DeepCollectionEquality().equals(other.tags, tags)) &&
             (identical(other.comments, comments) ||
                 const DeepCollectionEquality()
                     .equals(other.comments, comments)));
@@ -890,8 +931,9 @@ class _$_Route with DiagnosticableTreeMixin implements _Route {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(duration) ^
-      const DeepCollectionEquality().hash(xp) ^
+      const DeepCollectionEquality().hash(exp) ^
       const DeepCollectionEquality().hash(steps) ^
+      const DeepCollectionEquality().hash(tags) ^
       const DeepCollectionEquality().hash(comments);
 
   @JsonKey(ignore: true)
@@ -911,8 +953,9 @@ abstract class _Route implements Route {
       required String name,
       required String description,
       required int duration,
-      required int xp,
-      required List<Step> steps,
+      required int exp,
+      List<Step>? steps,
+      required List<String> tags,
       List<Comment>? comments}) = _$_Route;
 
   factory _Route.fromJson(Map<String, dynamic> json) = _$_Route.fromJson;
@@ -926,9 +969,11 @@ abstract class _Route implements Route {
   @override
   int get duration => throw _privateConstructorUsedError;
   @override
-  int get xp => throw _privateConstructorUsedError;
+  int get exp => throw _privateConstructorUsedError;
   @override
-  List<Step> get steps => throw _privateConstructorUsedError;
+  List<Step>? get steps => throw _privateConstructorUsedError;
+  @override
+  List<String> get tags => throw _privateConstructorUsedError;
   @override
   List<Comment>? get comments => throw _privateConstructorUsedError;
   @override
@@ -947,13 +992,13 @@ class _$StepTearOff {
   _Step call(
       {required String name,
       required String description,
-      String? photoUrl,
-      required String pointId}) {
+      Point? point,
+      @JsonKey(name: 'photoURL') String? photoUrl}) {
     return _Step(
       name: name,
       description: description,
+      point: point,
       photoUrl: photoUrl,
-      pointId: pointId,
     );
   }
 
@@ -969,8 +1014,9 @@ const $Step = _$StepTearOff();
 mixin _$Step {
   String get name => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
+  Point? get point => throw _privateConstructorUsedError;
+  @JsonKey(name: 'photoURL')
   String? get photoUrl => throw _privateConstructorUsedError;
-  String get pointId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -982,7 +1028,12 @@ abstract class $StepCopyWith<$Res> {
   factory $StepCopyWith(Step value, $Res Function(Step) then) =
       _$StepCopyWithImpl<$Res>;
   $Res call(
-      {String name, String description, String? photoUrl, String pointId});
+      {String name,
+      String description,
+      Point? point,
+      @JsonKey(name: 'photoURL') String? photoUrl});
+
+  $PointCopyWith<$Res>? get point;
 }
 
 /// @nodoc
@@ -997,8 +1048,8 @@ class _$StepCopyWithImpl<$Res> implements $StepCopyWith<$Res> {
   $Res call({
     Object? name = freezed,
     Object? description = freezed,
+    Object? point = freezed,
     Object? photoUrl = freezed,
-    Object? pointId = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -1009,15 +1060,26 @@ class _$StepCopyWithImpl<$Res> implements $StepCopyWith<$Res> {
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      point: point == freezed
+          ? _value.point
+          : point // ignore: cast_nullable_to_non_nullable
+              as Point?,
       photoUrl: photoUrl == freezed
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
-      pointId: pointId == freezed
-          ? _value.pointId
-          : pointId // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
+  }
+
+  @override
+  $PointCopyWith<$Res>? get point {
+    if (_value.point == null) {
+      return null;
+    }
+
+    return $PointCopyWith<$Res>(_value.point!, (value) {
+      return _then(_value.copyWith(point: value));
+    });
   }
 }
 
@@ -1027,7 +1089,13 @@ abstract class _$StepCopyWith<$Res> implements $StepCopyWith<$Res> {
       __$StepCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String name, String description, String? photoUrl, String pointId});
+      {String name,
+      String description,
+      Point? point,
+      @JsonKey(name: 'photoURL') String? photoUrl});
+
+  @override
+  $PointCopyWith<$Res>? get point;
 }
 
 /// @nodoc
@@ -1043,8 +1111,8 @@ class __$StepCopyWithImpl<$Res> extends _$StepCopyWithImpl<$Res>
   $Res call({
     Object? name = freezed,
     Object? description = freezed,
+    Object? point = freezed,
     Object? photoUrl = freezed,
-    Object? pointId = freezed,
   }) {
     return _then(_Step(
       name: name == freezed
@@ -1055,14 +1123,14 @@ class __$StepCopyWithImpl<$Res> extends _$StepCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      point: point == freezed
+          ? _value.point
+          : point // ignore: cast_nullable_to_non_nullable
+              as Point?,
       photoUrl: photoUrl == freezed
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
-      pointId: pointId == freezed
-          ? _value.pointId
-          : pointId // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -1073,8 +1141,8 @@ class _$_Step with DiagnosticableTreeMixin implements _Step {
   const _$_Step(
       {required this.name,
       required this.description,
-      this.photoUrl,
-      required this.pointId});
+      this.point,
+      @JsonKey(name: 'photoURL') this.photoUrl});
 
   factory _$_Step.fromJson(Map<String, dynamic> json) =>
       _$_$_StepFromJson(json);
@@ -1084,13 +1152,14 @@ class _$_Step with DiagnosticableTreeMixin implements _Step {
   @override
   final String description;
   @override
-  final String? photoUrl;
+  final Point? point;
   @override
-  final String pointId;
+  @JsonKey(name: 'photoURL')
+  final String? photoUrl;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Step(name: $name, description: $description, photoUrl: $photoUrl, pointId: $pointId)';
+    return 'Step(name: $name, description: $description, point: $point, photoUrl: $photoUrl)';
   }
 
   @override
@@ -1100,8 +1169,8 @@ class _$_Step with DiagnosticableTreeMixin implements _Step {
       ..add(DiagnosticsProperty('type', 'Step'))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('description', description))
-      ..add(DiagnosticsProperty('photoUrl', photoUrl))
-      ..add(DiagnosticsProperty('pointId', pointId));
+      ..add(DiagnosticsProperty('point', point))
+      ..add(DiagnosticsProperty('photoUrl', photoUrl));
   }
 
   @override
@@ -1113,11 +1182,11 @@ class _$_Step with DiagnosticableTreeMixin implements _Step {
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
+            (identical(other.point, point) ||
+                const DeepCollectionEquality().equals(other.point, point)) &&
             (identical(other.photoUrl, photoUrl) ||
                 const DeepCollectionEquality()
-                    .equals(other.photoUrl, photoUrl)) &&
-            (identical(other.pointId, pointId) ||
-                const DeepCollectionEquality().equals(other.pointId, pointId)));
+                    .equals(other.photoUrl, photoUrl)));
   }
 
   @override
@@ -1125,8 +1194,8 @@ class _$_Step with DiagnosticableTreeMixin implements _Step {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(photoUrl) ^
-      const DeepCollectionEquality().hash(pointId);
+      const DeepCollectionEquality().hash(point) ^
+      const DeepCollectionEquality().hash(photoUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -1143,8 +1212,8 @@ abstract class _Step implements Step {
   const factory _Step(
       {required String name,
       required String description,
-      String? photoUrl,
-      required String pointId}) = _$_Step;
+      Point? point,
+      @JsonKey(name: 'photoURL') String? photoUrl}) = _$_Step;
 
   factory _Step.fromJson(Map<String, dynamic> json) = _$_Step.fromJson;
 
@@ -1153,9 +1222,10 @@ abstract class _Step implements Step {
   @override
   String get description => throw _privateConstructorUsedError;
   @override
-  String? get photoUrl => throw _privateConstructorUsedError;
+  Point? get point => throw _privateConstructorUsedError;
   @override
-  String get pointId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'photoURL')
+  String? get photoUrl => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$StepCopyWith<_Step> get copyWith => throw _privateConstructorUsedError;
@@ -1600,8 +1670,8 @@ class _$PointTearOff {
       @JsonKey(name: 'photoURL') String? photoUrl,
       String? howToGet,
       required String type,
-      required List<String> tags,
-      required Coordinate coordinate,
+      List<String>? tags,
+      required Coordinate coordinates,
       String? description,
       String? website,
       List<Comment>? comments,
@@ -1614,7 +1684,7 @@ class _$PointTearOff {
       howToGet: howToGet,
       type: type,
       tags: tags,
-      coordinate: coordinate,
+      coordinates: coordinates,
       description: description,
       website: website,
       comments: comments,
@@ -1639,8 +1709,8 @@ mixin _$Point {
   String? get photoUrl => throw _privateConstructorUsedError;
   String? get howToGet => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
-  List<String> get tags => throw _privateConstructorUsedError;
-  Coordinate get coordinate => throw _privateConstructorUsedError;
+  List<String>? get tags => throw _privateConstructorUsedError;
+  Coordinate get coordinates => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get website => throw _privateConstructorUsedError;
   List<Comment>? get comments => throw _privateConstructorUsedError;
@@ -1662,14 +1732,14 @@ abstract class $PointCopyWith<$Res> {
       @JsonKey(name: 'photoURL') String? photoUrl,
       String? howToGet,
       String type,
-      List<String> tags,
-      Coordinate coordinate,
+      List<String>? tags,
+      Coordinate coordinates,
       String? description,
       String? website,
       List<Comment>? comments,
       int likes});
 
-  $CoordinateCopyWith<$Res> get coordinate;
+  $CoordinateCopyWith<$Res> get coordinates;
 }
 
 /// @nodoc
@@ -1689,7 +1759,7 @@ class _$PointCopyWithImpl<$Res> implements $PointCopyWith<$Res> {
     Object? howToGet = freezed,
     Object? type = freezed,
     Object? tags = freezed,
-    Object? coordinate = freezed,
+    Object? coordinates = freezed,
     Object? description = freezed,
     Object? website = freezed,
     Object? comments = freezed,
@@ -1723,10 +1793,10 @@ class _$PointCopyWithImpl<$Res> implements $PointCopyWith<$Res> {
       tags: tags == freezed
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      coordinate: coordinate == freezed
-          ? _value.coordinate
-          : coordinate // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      coordinates: coordinates == freezed
+          ? _value.coordinates
+          : coordinates // ignore: cast_nullable_to_non_nullable
               as Coordinate,
       description: description == freezed
           ? _value.description
@@ -1748,9 +1818,9 @@ class _$PointCopyWithImpl<$Res> implements $PointCopyWith<$Res> {
   }
 
   @override
-  $CoordinateCopyWith<$Res> get coordinate {
-    return $CoordinateCopyWith<$Res>(_value.coordinate, (value) {
-      return _then(_value.copyWith(coordinate: value));
+  $CoordinateCopyWith<$Res> get coordinates {
+    return $CoordinateCopyWith<$Res>(_value.coordinates, (value) {
+      return _then(_value.copyWith(coordinates: value));
     });
   }
 }
@@ -1767,15 +1837,15 @@ abstract class _$PointCopyWith<$Res> implements $PointCopyWith<$Res> {
       @JsonKey(name: 'photoURL') String? photoUrl,
       String? howToGet,
       String type,
-      List<String> tags,
-      Coordinate coordinate,
+      List<String>? tags,
+      Coordinate coordinates,
       String? description,
       String? website,
       List<Comment>? comments,
       int likes});
 
   @override
-  $CoordinateCopyWith<$Res> get coordinate;
+  $CoordinateCopyWith<$Res> get coordinates;
 }
 
 /// @nodoc
@@ -1796,7 +1866,7 @@ class __$PointCopyWithImpl<$Res> extends _$PointCopyWithImpl<$Res>
     Object? howToGet = freezed,
     Object? type = freezed,
     Object? tags = freezed,
-    Object? coordinate = freezed,
+    Object? coordinates = freezed,
     Object? description = freezed,
     Object? website = freezed,
     Object? comments = freezed,
@@ -1830,10 +1900,10 @@ class __$PointCopyWithImpl<$Res> extends _$PointCopyWithImpl<$Res>
       tags: tags == freezed
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      coordinate: coordinate == freezed
-          ? _value.coordinate
-          : coordinate // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      coordinates: coordinates == freezed
+          ? _value.coordinates
+          : coordinates // ignore: cast_nullable_to_non_nullable
               as Coordinate,
       description: description == freezed
           ? _value.description
@@ -1865,8 +1935,8 @@ class _$_Point with DiagnosticableTreeMixin implements _Point {
       @JsonKey(name: 'photoURL') this.photoUrl,
       this.howToGet,
       required this.type,
-      required this.tags,
-      required this.coordinate,
+      this.tags,
+      required this.coordinates,
       this.description,
       this.website,
       this.comments,
@@ -1889,9 +1959,9 @@ class _$_Point with DiagnosticableTreeMixin implements _Point {
   @override
   final String type;
   @override
-  final List<String> tags;
+  final List<String>? tags;
   @override
-  final Coordinate coordinate;
+  final Coordinate coordinates;
   @override
   final String? description;
   @override
@@ -1903,7 +1973,7 @@ class _$_Point with DiagnosticableTreeMixin implements _Point {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Point(id: $id, authorId: $authorId, name: $name, photoUrl: $photoUrl, howToGet: $howToGet, type: $type, tags: $tags, coordinate: $coordinate, description: $description, website: $website, comments: $comments, likes: $likes)';
+    return 'Point(id: $id, authorId: $authorId, name: $name, photoUrl: $photoUrl, howToGet: $howToGet, type: $type, tags: $tags, coordinates: $coordinates, description: $description, website: $website, comments: $comments, likes: $likes)';
   }
 
   @override
@@ -1918,7 +1988,7 @@ class _$_Point with DiagnosticableTreeMixin implements _Point {
       ..add(DiagnosticsProperty('howToGet', howToGet))
       ..add(DiagnosticsProperty('type', type))
       ..add(DiagnosticsProperty('tags', tags))
-      ..add(DiagnosticsProperty('coordinate', coordinate))
+      ..add(DiagnosticsProperty('coordinates', coordinates))
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('website', website))
       ..add(DiagnosticsProperty('comments', comments))
@@ -1946,9 +2016,9 @@ class _$_Point with DiagnosticableTreeMixin implements _Point {
                 const DeepCollectionEquality().equals(other.type, type)) &&
             (identical(other.tags, tags) ||
                 const DeepCollectionEquality().equals(other.tags, tags)) &&
-            (identical(other.coordinate, coordinate) ||
+            (identical(other.coordinates, coordinates) ||
                 const DeepCollectionEquality()
-                    .equals(other.coordinate, coordinate)) &&
+                    .equals(other.coordinates, coordinates)) &&
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
@@ -1972,7 +2042,7 @@ class _$_Point with DiagnosticableTreeMixin implements _Point {
       const DeepCollectionEquality().hash(howToGet) ^
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(tags) ^
-      const DeepCollectionEquality().hash(coordinate) ^
+      const DeepCollectionEquality().hash(coordinates) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(website) ^
       const DeepCollectionEquality().hash(comments) ^
@@ -1997,8 +2067,8 @@ abstract class _Point implements Point {
       @JsonKey(name: 'photoURL') String? photoUrl,
       String? howToGet,
       required String type,
-      required List<String> tags,
-      required Coordinate coordinate,
+      List<String>? tags,
+      required Coordinate coordinates,
       String? description,
       String? website,
       List<Comment>? comments,
@@ -2020,9 +2090,9 @@ abstract class _Point implements Point {
   @override
   String get type => throw _privateConstructorUsedError;
   @override
-  List<String> get tags => throw _privateConstructorUsedError;
+  List<String>? get tags => throw _privateConstructorUsedError;
   @override
-  Coordinate get coordinate => throw _privateConstructorUsedError;
+  Coordinate get coordinates => throw _privateConstructorUsedError;
   @override
   String? get description => throw _privateConstructorUsedError;
   @override

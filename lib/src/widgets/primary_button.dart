@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_map/src/domain/bloc/loading_cubit.dart';
+import 'package:test_map/src/theme/color.dart';
 
 class PrimaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -15,6 +16,19 @@ class PrimaryButton extends StatelessWidget {
     this.loading,
   }) : super(key: key);
 
+  factory PrimaryButton.success({
+    Key? key,
+    VoidCallback? onPressed,
+    required Widget child,
+    bool? loading,
+  }) =>
+      PrimaryButton(
+        child: child,
+        onPressed: onPressed,
+        loading: loading,
+        color: green,
+      );
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoadingCubit, bool>(
@@ -23,8 +37,8 @@ class PrimaryButton extends StatelessWidget {
         return AnimatedContainer(
             duration: Duration(milliseconds: 200),
             decoration: BoxDecoration(
-                color: onPressed != null && color == null
-                    ? Theme.of(context).primaryColor
+                color: onPressed != null
+                    ? color ?? Theme.of(context).primaryColor
                     : Theme.of(context).disabledColor,
                 // color: secondaryWhite,
                 borderRadius: BorderRadius.circular(8)),
@@ -47,9 +61,11 @@ class PrimaryButton extends StatelessWidget {
                                   ),
                                 )
                               : DefaultTextStyle(
-                                  child: child,
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                  child: child,
                                 ))),
                 ),
               ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_map/src/ui/home/screens/map/bloc/map_bloc.dart';
-import 'package:test_map/src/ui/home/screens/routes/bloc/route_bloc.dart';
+import 'package:test_map/src/ui/home/screens/routes/bloc/routes_bloc.dart';
 
 import 'home_view.dart';
 
@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
     // return HomeView();
     return MultiBlocProvider(providers: [
       BlocProvider(create: (context) => MapBloc()..loadPoints()),
-      BlocProvider(create: (context) => RouteCubit()..loadRoutes())
+      BlocProvider(create: (context) => RoutesCubit()..loadRoutes())
     ], child: HomeView());
   }
 }

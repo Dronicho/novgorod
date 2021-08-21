@@ -42,7 +42,7 @@ class Achievement with _$Achievement {
       required int exp,
       required int icon}) = _Achievement;
 
-  factory AchievementfromJson(Map<String, dynamic> json) =>
+  factory Achievement.fromJson(Map<String, dynamic> json) =>
       _$AchievementFromJson(json);
 }
 
@@ -53,8 +53,9 @@ class Route with _$Route {
       required String name,
       required String description,
       required int duration,
-      required int xp,
-      required List<Step> steps,
+      required int exp,
+      List<Step>? steps,
+      required List<String> tags,
       List<Comment>? comments}) = _Route;
 
   factory Route.fromJson(Map<String, dynamic> json) => _$RouteFromJson(json);
@@ -62,11 +63,12 @@ class Route with _$Route {
 
 @freezed
 class Step with _$Step {
-  const factory Step(
-      {required String name,
-      required String description,
-      String? photoUrl,
-      required String pointId}) = _Step;
+  const factory Step({
+    required String name,
+    required String description,
+    Point? point,
+    @JsonKey(name: 'photoURL') String? photoUrl,
+  }) = _Step;
 
   factory Step.fromJson(Map<String, dynamic> json) => _$StepFromJson(json);
 }
@@ -102,8 +104,8 @@ class Point with _$Point {
       @JsonKey(name: 'photoURL') String? photoUrl,
       String? howToGet,
       required String type,
-      required List<String> tags,
-      required Coordinate coordinate,
+      List<String>? tags,
+      required Coordinate coordinates,
       String? description,
       String? website,
       List<Comment>? comments,

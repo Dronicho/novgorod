@@ -92,7 +92,7 @@ class _MapviewState extends State<Mapview> with AutomaticKeepAliveClientMixin {
                               _controller.animateCamera(
                                   CameraUpdate.newLatLngZoom(
                                       LatLng(
-                                          e.coordinate.lat, e.coordinate.lng),
+                                          e.coordinates.lat, e.coordinates.lng),
                                       15));
                               showModalBottomSheet(
                                   isScrollControlled: true,
@@ -131,7 +131,7 @@ class _MapviewState extends State<Mapview> with AutomaticKeepAliveClientMixin {
                                                           height: 8,
                                                         ),
                                                         Wrap(
-                                                          children: e.tags
+                                                          children: e.tags!
                                                               .map(
                                                                   (t) =>
                                                                       Padding(
@@ -179,7 +179,7 @@ class _MapviewState extends State<Mapview> with AutomaticKeepAliveClientMixin {
                             },
                             markerId: MarkerId(e.id!),
                             position:
-                                LatLng(e.coordinate.lat, e.coordinate.lng)))
+                                LatLng(e.coordinates.lat, e.coordinates.lng)))
                         .toSet());
               }
               return Container();
@@ -340,7 +340,7 @@ class _SearchViewState extends State<SearchView> {
                         widget.close();
                         widget.controller.animateCamera(
                             CameraUpdate.newLatLngZoom(
-                                LatLng(e.coordinate.lat, e.coordinate.lng),
+                                LatLng(e.coordinates.lat, e.coordinates.lng),
                                 15));
                         showModalBottomSheet(
                             isScrollControlled: true,
@@ -373,7 +373,7 @@ class _SearchViewState extends State<SearchView> {
                                                 height: 8,
                                               ),
                                               Wrap(
-                                                children: e.tags
+                                                children: e.tags!
                                                     .map((t) => Padding(
                                                           padding:
                                                               const EdgeInsets
