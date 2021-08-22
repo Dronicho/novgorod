@@ -27,8 +27,6 @@ class MultiSelectField<B extends BlocBase<S>, S> extends StatefulWidget {
 
 class _MultiSelectFieldState<B extends BlocBase<S>, S>
     extends State<MultiSelectField<B, S>> {
-  List<String> _tags = [];
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<B, S>(
@@ -50,11 +48,12 @@ class _MultiSelectFieldState<B extends BlocBase<S>, S>
                 showModalBottomSheet(
                     isScrollControlled: true,
                     context: context,
-                    builder: (context) => MultiSelectBottomSheet<String>(
+                    builder: (_) => MultiSelectBottomSheet<String>(
                         onConfirm: (value) {
                           print(value);
                         },
                         onSelectionChanged: (value) {
+                          print(value);
                           widget.onChanged(context.read<B>().state, value);
                         },
                         cancelText: Text('Отмена'),
@@ -111,7 +110,7 @@ class DropdownField<B extends BlocBase<S>, S> extends StatelessWidget {
       required this.onChanged})
       : super(key: key);
 
-  final List<String> values;
+  final List<Map<String, String>> values;
 
   @override
   Widget build(BuildContext context) {
@@ -141,8 +140,8 @@ class DropdownField<B extends BlocBase<S>, S> extends StatelessWidget {
                 },
                 items: values
                     .map((e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e),
+                          value: e['value'],
+                          child: Text(e['label']!),
                         ))
                     .toList(),
               )),

@@ -49,7 +49,7 @@ class _ImagePageState extends State<ImagePage>
   }
 
   double get _overallDragAxisExtent {
-    final Size size = context.size!;
+    final size = context.size!;
     return size.height;
   }
 
@@ -216,9 +216,10 @@ class _ImagePageState extends State<ImagePage>
 
   void _updateMoveAnimation() {
     final end = _dragExtent.sign;
-    if (_scaleState == PhotoViewScaleState.initial)
+    if (_scaleState == PhotoViewScaleState.initial) {
       _opacityAnimation = _moveController
           .drive(Tween<double>(begin: 1, end: _dragExtent / widget.height * 2));
+    }
     _moveAnimation = _moveController.drive(
       Tween<Offset>(
         begin: Offset.zero,

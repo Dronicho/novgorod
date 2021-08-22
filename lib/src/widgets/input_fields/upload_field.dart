@@ -46,7 +46,9 @@ class _UploadFieldState<B extends BlocBase<S>, S>
       );
     }
     return BlocBuilder<B, S>(
-      buildWhen: widget.buildWhen ?? (previous, current) => widget.valueGetter(previous) != widget.valueGetter(current),
+      buildWhen: widget.buildWhen ??
+          (previous, current) =>
+              widget.valueGetter(previous) != widget.valueGetter(current),
       builder: (context, state) {
         final attachment = widget.valueGetter(state);
         print(attachment);

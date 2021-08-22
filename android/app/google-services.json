@@ -33,6 +33,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167835113887:android:c83a26ed2f85caa2ce45aa",
+        "android_client_info": {
+          "package_name": "ru.origin_dev.novlegend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167835113887-h0nhjg504llro91b1dn90sijctalmhnt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEY_mvP58WiCQa2s_Jja9MbVq-3CE5U4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167835113887-h0nhjg504llro91b1dn90sijctalmhnt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

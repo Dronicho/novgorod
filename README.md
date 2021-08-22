@@ -1,16 +1,47 @@
-# test_map
+## Реализованный функционал
+ * Просмотр всех существующих меток
+ * Добавление своих меток
+ * Создание маршрутов с неограниченный количеством мест
+ * Просмотр маршрутов
+ * Прохождение маршрута:
+    * Просмотр информации о текущем месте в маршруте
+    * Прослушивание описания объектов с помощью Text-To-Speech
+ * Поиск интересующих мест
+ * Профиль с достижениями, уровнем и опытом
 
-A new Flutter project.
+## Особенность проекта в следующем:
+ * Геймификация
+ * Подбор индвидуальных маршрутов 
 
-## Getting Started
+## Технологический стек
+ * Flutter + Bloc
+ * Firebase storage
+ * Google Maps API
 
-This project is a starting point for a Flutter application.
+# Getting Started
+> Протестированно на Flutter 2.2.3 <br>
+> Для работы необходим Android SDK >= 21 <br>
+> Не работает на IOS симуляторе
 
-A few resources to get you started if this is your first Flutter project:
+Устанавливанием [Flutter](https://flutter.dev/docs/get-started/install)
+Далее
+```
+git clone https://github.com/Dronicho/novgorod.git
+cd novgorod
+flutter pub get
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+> Для работы необходим Android device/emulator с Google сервисами
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+После подключения устройства
+
+### Debug Build
+```
+flutter run
+```
+
+### Release Build
+```
+flutter build apk --split-per-abi
+flutter install
+```

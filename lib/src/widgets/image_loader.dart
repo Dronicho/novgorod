@@ -3,15 +3,14 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:test_map/src/domain/services/firebase.dart';
 
 class ImageLoader extends InheritedWidget {
   final _storage = GetIt.I<FirebaseStorageService>();
-  final _picker = ImagePicker();
 
   ImageLoader({Key? key, required this.child}) : super(key: key, child: child);
 
+  @override
   final Widget child;
 
   Future<_ImagePayload> uploadImage() async {
@@ -34,7 +33,6 @@ class ImageLoader extends InheritedWidget {
       res.files.forEach((e) async {
         print(e);
         cb(null, e);
-        final name = e.path!.split('/').last;
         final url = await _storage.uploadFile(
             File(e.path!), '/images' + e.path!.split('/').join(''));
         print(url);

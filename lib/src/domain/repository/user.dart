@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:test_map/src/domain/models/user.dart';
 import 'package:test_map/src/domain/repository/base.dart';
 

@@ -44,11 +44,24 @@ class ProfileView extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 14.0, horizontal: 0),
-                child: Text('Профиль',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(fontWeight: FontWeight.bold)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Профиль',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(fontWeight: FontWeight.bold)),
+                    IconButton(
+                      onPressed: () {
+                        context
+                            .read<AuthenticationBloc>()
+                            .add(AuthenticationLogoutRequested());
+                      },
+                      icon: Icon(Icons.logout),
+                    )
+                  ],
+                ),
               ),
               Center(
                 child: CircleAvatar(
@@ -148,8 +161,7 @@ class AchievementTile extends StatelessWidget {
     final primaryColor = Theme.of(context).primaryColor;
 
     return ListTile(
-        leading: Icon(IconData(achievement.icon, fontFamily: 'MaterialIcons'),
-            color: primaryColor),
+        leading: Icon(Icons.event_available_rounded, color: primaryColor),
         title: Text(achievement.name, style: TextStyle(color: primaryColor)),
         subtitle: Text(achievement.description),
         trailing: Column(

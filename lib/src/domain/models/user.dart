@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:test_map/src/widgets/input_fields/upload_field.dart';
 
 part 'user.freezed.dart';
@@ -19,7 +20,7 @@ class User with _$User {
       required int level,
       List<Route>? completedStories,
       required List<Achievement> achievements,
-      required UserRole role}) = _User;
+      UserRole? role}) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
@@ -54,11 +55,30 @@ class Route with _$Route {
       required String description,
       required int duration,
       required int exp,
+      required String type,
+      required int likes,
+      @JsonKey(name: 'photoURL') required String photoUrl,
       List<Step>? steps,
       required List<String> tags,
       List<Comment>? comments}) = _Route;
 
   factory Route.fromJson(Map<String, dynamic> json) => _$RouteFromJson(json);
+}
+
+@freezed
+class LocalRoute with _$LocalRoute {
+  const factory LocalRoute(
+      {required String name,
+      required String description,
+      required int duration,
+      required int exp,
+      required String type,
+      @JsonKey(ignore: true) SendingAttachment? file,
+      List<LocalStep>? steps,
+      required List<String> tags}) = _LocalRoute;
+
+  factory LocalRoute.fromJson(Map<String, dynamic> json) =>
+      _$LocalRouteFromJson(json);
 }
 
 @freezed
@@ -71,6 +91,20 @@ class Step with _$Step {
   }) = _Step;
 
   factory Step.fromJson(Map<String, dynamic> json) => _$StepFromJson(json);
+}
+
+@freezed
+class LocalStep with _$LocalStep {
+  const factory LocalStep({
+    required String name,
+    required String description,
+    required String pointId,
+    @JsonKey(ignore: true) Point? point,
+    @JsonKey(ignore: true) SendingAttachment? file,
+  }) = _LocalStep;
+
+  factory LocalStep.fromJson(Map<String, dynamic> json) =>
+      _$LocalStepFromJson(json);
 }
 
 @freezed
@@ -88,11 +122,14 @@ class Comment with _$Comment {
 
 @freezed
 class Coordinate with _$Coordinate {
+  const Coordinate._();
   const factory Coordinate({required double lat, required double lng}) =
       _Coordinate;
 
   factory Coordinate.fromJson(Map<String, dynamic> json) =>
       _$CoordinateFromJson(json);
+
+  LatLng toLatLng() => LatLng(lat, lng);
 }
 
 @freezed
@@ -107,6 +144,9 @@ class Point with _$Point {
       List<String>? tags,
       required Coordinate coordinates,
       String? description,
+      String? descriptionEn,
+      String? nameEn,
+      List<String>? tagsEn,
       String? website,
       List<Comment>? comments,
       required int likes}) = _Point;

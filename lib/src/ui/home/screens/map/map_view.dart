@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:test_map/src/domain/models/user.dart';
+import 'package:test_map/src/domain/utils/point_info.dart';
+import 'package:test_map/src/theme/color.dart';
+import 'package:test_map/src/theme/novgorod_icons_icons.dart';
 import 'package:test_map/src/ui/home/screens/map/bloc/map_repository.dart';
 import 'package:test_map/src/ui/home/screens/map/find_route/find_route_bloc.dart';
-import 'package:test_map/src/widgets/primary_button.dart';
 
 import 'bloc/map_bloc.dart';
 import 'bloc/map_state.dart';
@@ -28,20 +30,20 @@ class _MapviewState extends State<Mapview> with AutomaticKeepAliveClientMixin {
   late GoogleMapController _controller;
 
   final mapTypeToColor = {
-    'достопримечательности': BitmapDescriptor.hueBlue,
-    'отели': BitmapDescriptor.hueRose,
-    'рестораны': BitmapDescriptor.hueGreen,
-    'музеи': BitmapDescriptor.hueBlue,
-    'маршруты': BitmapDescriptor.hueBlue,
-    'достопримечательность': BitmapDescriptor.hueBlue,
+    'Достопримечательности': BitmapDescriptor.hueBlue,
+    'Отели': BitmapDescriptor.hueRose,
+    'Рестораны': BitmapDescriptor.hueGreen,
+    'Музеи': BitmapDescriptor.hueBlue,
+    'Маршруты': BitmapDescriptor.hueBlue,
+    'Достопримечательность': BitmapDescriptor.hueBlue,
   };
 
   Map<String, bool> filters = {
-    'отели': true,
-    'рестораны': true,
-    'музеи': true,
-    'маршруты': true,
-    'достопримечательность': true,
+    'Отели': true,
+    'Рестораны': true,
+    'Музеи': true,
+    'Маршруты': true,
+    'Достопримечательность': true,
   };
 
   @override
@@ -49,157 +51,73 @@ class _MapviewState extends State<Mapview> with AutomaticKeepAliveClientMixin {
     super.build(context);
     return Stack(
       children: [
-        Expanded(
-          child: BlocBuilder<MapBloc, MapState>(
-            builder: (context, state) {
-              if (state is MapLoading) {
-                return GoogleMap(
+        BlocBuilder<MapBloc, MapState>(
+          builder: (context, state) {
+            if (state is MapLoading) {
+              return GoogleMap(
+                myLocationButtonEnabled: false,
+                zoomControlsEnabled: false,
+                initialCameraPosition: Mapview._initialCameraPosition,
+                onMapCreated: (controller) => _controller = controller,
+                // polylines: {
+                //   if (_info != null)
+                //     Polyline(
+                //       polylineId: const PolylineId('overview_polyline'),
+                //       color: Colors.red,
+                //       width: 10,
+                //       points: _info!.polylinePoints
+                //           .map((e) => LatLng(e.latitude, e.longitude))
+                //           .toList(),
+                //     ),
+                // },
+                // onLongPress: _addMarker,
+              );
+            } else if (state is MapLoaded) {
+              return GoogleMap(
                   myLocationButtonEnabled: false,
                   zoomControlsEnabled: false,
                   initialCameraPosition: Mapview._initialCameraPosition,
-                  onMapCreated: (controller) => _controller = controller,
-                  // polylines: {
-                  //   if (_info != null)
-                  //     Polyline(
-                  //       polylineId: const PolylineId('overview_polyline'),
-                  //       color: Colors.red,
-                  //       width: 10,
-                  //       points: _info!.polylinePoints
-                  //           .map((e) => LatLng(e.latitude, e.longitude))
-                  //           .toList(),
-                  //     ),
-                  // },
-                  // onLongPress: _addMarker,
-                );
-              } else if (state is MapLoaded) {
-                return GoogleMap(
-                    myLocationButtonEnabled: false,
-                    zoomControlsEnabled: false,
-                    initialCameraPosition: Mapview._initialCameraPosition,
-                    markers: state.points
-                        .where((p) {
-                          final s =
-                              filters.entries.where((element) => element.value);
-                          return s
-                              .map((e) => e.key.toLowerCase())
-                              .contains(p.type.toLowerCase());
-                        })
-                        .map((e) => Marker(
-                            icon: BitmapDescriptor.defaultMarkerWithHue(
-                                mapTypeToColor[e.type.toLowerCase().trim()] ??
-                                    BitmapDescriptor.hueBlue),
-                            onTap: () {
-                              _controller.animateCamera(
-                                  CameraUpdate.newLatLngZoom(
-                                      LatLng(
-                                          e.coordinates.lat, e.coordinates.lng),
-                                      15));
-                              showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  context: context,
-                                  builder: (context) =>
-                                      DraggableScrollableSheet(
-                                          expand: false,
-                                          initialChildSize: 0.5,
-                                          builder: (context, sc) => SafeArea(
-                                                child: SingleChildScrollView(
-                                                  controller: sc,
-                                                  child: SafeArea(
-                                                    child: Column(
-                                                      children: [
-                                                        SizedBox(
-                                                          height: 32,
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(e.name,
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .headline5),
-                                                        ),
-                                                        if (e.photoUrl !=
-                                                                null &&
-                                                            e.photoUrl!
-                                                                .isNotEmpty)
-                                                          CachedNetworkImage(
-                                                              imageUrl:
-                                                                  e.photoUrl!),
-                                                        SizedBox(
-                                                          height: 8,
-                                                        ),
-                                                        Wrap(
-                                                          children: e.tags!
-                                                              .map(
-                                                                  (t) =>
-                                                                      Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.symmetric(horizontal: 4.0),
-                                                                        child: Chip(
-                                                                            label:
-                                                                                Text(t)),
-                                                                      ))
-                                                              .toList(),
-                                                        ),
-                                                        SizedBox(height: 8),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(
-                                                              e.description ??
-                                                                  ''),
-                                                        ),
-                                                        SizedBox(height: 16),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: PrimaryButton(
-                                                              onPressed: () {},
-                                                              child: Text(
-                                                                  'Проложить маршрут')),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: PrimaryButton(
-                                                              onPressed: () {},
-                                                              child: Text(
-                                                                  'Я на месте')),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              )));
-                            },
-                            markerId: MarkerId(e.id!),
-                            position:
-                                LatLng(e.coordinates.lat, e.coordinates.lng)))
-                        .toSet());
-              }
-              return Container();
-            },
-          ),
+                  markers: state.points
+                      .where((p) {
+                        final s =
+                            filters.entries.where((element) => element.value);
+                        return s
+                            .map((e) => e.key.toLowerCase())
+                            .contains(p.type.toLowerCase());
+                      })
+                      .map((e) => Marker(
+                          icon: BitmapDescriptor.defaultMarkerWithHue(
+                              mapTypeToColor[e.type.toLowerCase().trim()] ??
+                                  BitmapDescriptor.hueBlue),
+                          onTap: () {
+                            _controller.animateCamera(
+                                CameraUpdate.newLatLngZoom(
+                                    e.coordinates.toLatLng(), 15));
+                            showPointInfo(context, e);
+                          },
+                          markerId: MarkerId(e.id! + e.name),
+                          position:
+                              LatLng(e.coordinates.lat, e.coordinates.lng)))
+                      .toSet());
+            }
+            return Container();
+          },
         ),
         Positioned(
-          top: 40,
+          top: MediaQuery.of(context).viewPadding.top + 32,
           left: 16,
           right: 16,
           child: OpenContainer(
+            closedElevation: 6,
             closedShape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             closedBuilder: (context, open) => GestureDetector(
                 onTap: open,
                 behavior: HitTestBehavior.opaque,
-                child: Container(
-                  height: 50,
+                child: Material(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [Text('Поиск...'), Icon(Icons.search)],
@@ -214,6 +132,7 @@ class _MapviewState extends State<Mapview> with AutomaticKeepAliveClientMixin {
             bottom: 16,
             left: 16,
             child: FloatingActionButton.extended(
+              heroTag: 'needHelp',
               backgroundColor: Colors.white,
               foregroundColor: Colors.black,
               label: Text('Нужен маршрут?'),
@@ -227,9 +146,10 @@ class _MapviewState extends State<Mapview> with AutomaticKeepAliveClientMixin {
               },
             )),
         Positioned(
-            top: 95,
+            top: MediaQuery.of(context).viewPadding.top + 120,
             right: 16,
             child: FloatingActionButton(
+              heroTag: 'filterFab',
               backgroundColor: Colors.white,
               foregroundColor: Theme.of(context).primaryColor,
               onPressed: () {
@@ -271,151 +191,85 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(top: 32.0),
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                    decoration: InputDecoration(hintText: 'Поиск...'),
-                    onChanged: (value) async {
-                      setState(() {
-                        _loading = true;
-                      });
-                      final res = await _repository.searchPoints(value);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Поиск'),
+      ),
+      body: Container(
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            children: [
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                      decoration: InputDecoration(hintText: 'Поиск...'),
+                      onChanged: (value) async {
+                        setState(() {
+                          _loading = true;
+                        });
+                        final res = await _repository.searchPoints(value);
 
-                      setState(() {
-                        _loading = false;
-                        _points = res;
-                      });
-                    })),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                    child: Chip(
-                      label: Text('Достопримечательности'),
-                      avatar: Icon(Icons.add),
+                        setState(() {
+                          _loading = false;
+                          _points = res;
+                        });
+                      })),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                      child: Chip(
+                        label: Text('Достопримечательности'),
+                        avatar: Icon(Icons.add),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                    child: Chip(
-                      label: Text('Достопримечательности'),
-                      avatar: Icon(Icons.add),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                      child: Chip(
+                        label: Text('Достопримечательности'),
+                        avatar: Icon(Icons.add),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                    child: Chip(
-                      label: Text('Достопримечательности'),
-                      avatar: Icon(Icons.add),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                      child: Chip(
+                        label: Text('Достопримечательности'),
+                        avatar: Icon(Icons.add),
+                      ),
                     ),
-                  ),
-                  Text('123123')
-                ],
+                    Text('123123')
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Text('Недавно искали'),
-            SizedBox(
-              height: 16,
-            ),
-            if (_loading)
-              CircularProgressIndicator()
-            else
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) => SearchTile(
-                      point: _points[index],
-                      onTap: () {
-                        final e = _points[index];
-                        widget.close();
-                        widget.controller.animateCamera(
-                            CameraUpdate.newLatLngZoom(
-                                LatLng(e.coordinates.lat, e.coordinates.lng),
-                                15));
-                        showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (context) => DraggableScrollableSheet(
-                                expand: false,
-                                initialChildSize: 0.35,
-                                builder: (context, sc) => SafeArea(
-                                      child: SingleChildScrollView(
-                                        controller: sc,
-                                        child: SafeArea(
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 32,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(e.name,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline5),
-                                              ),
-                                              if (e.photoUrl != null &&
-                                                  e.photoUrl!.isNotEmpty)
-                                                CachedNetworkImage(
-                                                    imageUrl: e.photoUrl!),
-                                              SizedBox(
-                                                height: 8,
-                                              ),
-                                              Wrap(
-                                                children: e.tags!
-                                                    .map((t) => Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      4.0),
-                                                          child: Chip(
-                                                              label: Text(t)),
-                                                        ))
-                                                    .toList(),
-                                              ),
-                                              SizedBox(height: 8),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child:
-                                                    Text(e.description ?? ''),
-                                              ),
-                                              SizedBox(height: 16),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: PrimaryButton(
-                                                    onPressed: () {},
-                                                    child: Text(
-                                                        'Проложить маршрут')),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: PrimaryButton(
-                                                    onPressed: () {},
-                                                    child: Text('Я на месте')),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    )));
-                      }),
-                  itemCount: _points.length)
-          ],
+              SizedBox(
+                height: 16,
+              ),
+              Text('Недавно искали'),
+              SizedBox(
+                height: 16,
+              ),
+              if (_loading)
+                CircularProgressIndicator()
+              else
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => SearchTile(
+                        point: _points[index],
+                        onTap: () {
+                          final e = _points[index];
+                          widget.close();
+                          widget.controller.animateCamera(
+                              CameraUpdate.newLatLngZoom(
+                                  LatLng(e.coordinates.lat, e.coordinates.lng),
+                                  15));
+                          showPointInfo(context, e);
+                        }),
+                    itemCount: _points.length)
+            ],
+          ),
         ),
       ),
     );
@@ -435,11 +289,27 @@ class FilterDialog extends StatefulWidget {
 
 class _FilterDialogState extends State<FilterDialog> {
   Map<String, bool> filters = {
-    'отели': true,
-    'рестораны': true,
-    'музеи': true,
-    'маршруты': true,
-    'достопримечательность': true,
+    'Отели': true,
+    'Рестораны': true,
+    'Музеи': true,
+    'Маршруты': true,
+    'Достопримечательность': true,
+  };
+
+  Map<String, IconData> mapFilterToIcon = {
+    'Отели': Icons.local_hotel,
+    'Рестораны': Icons.restaurant,
+    'Музеи': Icons.museum,
+    'Маршруты': NovgorodIcons.route,
+    'Достопримечательность': Icons.local_see
+  };
+
+  Map<String, Color> mapFilterToColor = {
+    'Отели': rose,
+    'Рестораны': green,
+    'Музеи': primaryColor,
+    'Маршруты': primaryColor,
+    'Достопримечательность': primaryColor
   };
 
   @override
@@ -452,35 +322,48 @@ class _FilterDialogState extends State<FilterDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text('Показывать на карте',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        ),
-        ...filters.entries
-            .map(
-              (entry) => CheckboxListTile(
-                  checkColor: Colors.white,
-                  activeColor: Theme.of(context).primaryColor,
-                  value: entry.value,
-                  onChanged: (v) {
-                    if (v != null) {
-                      setState(() {
-                        filters[entry.key] = v;
-                      });
-                      widget.onChange(entry.key, v);
-                    }
-                  },
-                  title: Text(entry.key)),
-            )
-            .toList(),
-      ],
-    ));
+    return Container(
+      child: Dialog(
+          insetPadding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text('Показывать на карте',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              ),
+              ...filters.entries
+                  .map(
+                    (entry) => CheckboxListTile(
+                        checkColor: Colors.white,
+                        activeColor: Theme.of(context).primaryColor,
+                        value: entry.value,
+                        onChanged: (v) {
+                          if (v != null) {
+                            setState(() {
+                              filters[entry.key] = v;
+                            });
+                            widget.onChange(entry.key, v);
+                          }
+                        },
+                        title: Row(
+                          children: [
+                            CircleAvatar(
+                                backgroundColor: secondaryGrey,
+                                child: Icon(mapFilterToIcon[entry.key],
+                                    color: mapFilterToColor[entry.key])),
+                            SizedBox(width: 8),
+                            FittedBox(child: Text(entry.key)),
+                          ],
+                        )),
+                  )
+                  .toList(),
+            ],
+          )),
+    );
   }
 }
 

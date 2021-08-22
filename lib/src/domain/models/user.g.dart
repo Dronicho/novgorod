@@ -21,7 +21,7 @@ _$_User _$_$_UserFromJson(Map<String, dynamic> json) {
     achievements: (json['achievements'] as List<dynamic>)
         .map((e) => Achievement.fromJson(e as Map<String, dynamic>))
         .toList(),
-    role: _$enumDecode(_$UserRoleEnumMap, json['role']),
+    role: _$enumDecodeNullable(_$UserRoleEnumMap, json['role']),
   );
 }
 
@@ -64,6 +64,17 @@ K _$enumDecode<K, V>(
   ).key;
 }
 
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+}
+
 const _$UserRoleEnumMap = {
   UserRole.user: 'user',
   UserRole.moderator: 'moderator',
@@ -95,6 +106,9 @@ _$_Route _$_$_RouteFromJson(Map<String, dynamic> json) {
     description: json['description'] as String,
     duration: json['duration'] as int,
     exp: json['exp'] as int,
+    type: json['type'] as String,
+    likes: json['likes'] as int,
+    photoUrl: json['photoURL'] as String,
     steps: (json['steps'] as List<dynamic>?)
         ?.map((e) => Step.fromJson(e as Map<String, dynamic>))
         .toList(),
@@ -111,9 +125,37 @@ Map<String, dynamic> _$_$_RouteToJson(_$_Route instance) => <String, dynamic>{
       'description': instance.description,
       'duration': instance.duration,
       'exp': instance.exp,
+      'type': instance.type,
+      'likes': instance.likes,
+      'photoURL': instance.photoUrl,
       'steps': instance.steps,
       'tags': instance.tags,
       'comments': instance.comments,
+    };
+
+_$_LocalRoute _$_$_LocalRouteFromJson(Map<String, dynamic> json) {
+  return _$_LocalRoute(
+    name: json['name'] as String,
+    description: json['description'] as String,
+    duration: json['duration'] as int,
+    exp: json['exp'] as int,
+    type: json['type'] as String,
+    steps: (json['steps'] as List<dynamic>?)
+        ?.map((e) => LocalStep.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+  );
+}
+
+Map<String, dynamic> _$_$_LocalRouteToJson(_$_LocalRoute instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'description': instance.description,
+      'duration': instance.duration,
+      'exp': instance.exp,
+      'type': instance.type,
+      'steps': instance.steps,
+      'tags': instance.tags,
     };
 
 _$_Step _$_$_StepFromJson(Map<String, dynamic> json) {
@@ -132,6 +174,21 @@ Map<String, dynamic> _$_$_StepToJson(_$_Step instance) => <String, dynamic>{
       'description': instance.description,
       'point': instance.point,
       'photoURL': instance.photoUrl,
+    };
+
+_$_LocalStep _$_$_LocalStepFromJson(Map<String, dynamic> json) {
+  return _$_LocalStep(
+    name: json['name'] as String,
+    description: json['description'] as String,
+    pointId: json['pointId'] as String,
+  );
+}
+
+Map<String, dynamic> _$_$_LocalStepToJson(_$_LocalStep instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'description': instance.description,
+      'pointId': instance.pointId,
     };
 
 _$_Comment _$_$_CommentFromJson(Map<String, dynamic> json) {
@@ -178,6 +235,10 @@ _$_Point _$_$_PointFromJson(Map<String, dynamic> json) {
     coordinates:
         Coordinate.fromJson(json['coordinates'] as Map<String, dynamic>),
     description: json['description'] as String?,
+    descriptionEn: json['descriptionEn'] as String?,
+    nameEn: json['nameEn'] as String?,
+    tagsEn:
+        (json['tagsEn'] as List<dynamic>?)?.map((e) => e as String).toList(),
     website: json['website'] as String?,
     comments: (json['comments'] as List<dynamic>?)
         ?.map((e) => Comment.fromJson(e as Map<String, dynamic>))
@@ -196,6 +257,9 @@ Map<String, dynamic> _$_$_PointToJson(_$_Point instance) => <String, dynamic>{
       'tags': instance.tags,
       'coordinates': instance.coordinates,
       'description': instance.description,
+      'descriptionEn': instance.descriptionEn,
+      'nameEn': instance.nameEn,
+      'tagsEn': instance.tagsEn,
       'website': instance.website,
       'comments': instance.comments,
       'likes': instance.likes,

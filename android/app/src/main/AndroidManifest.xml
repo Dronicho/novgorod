@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.test_map">
+    package="ru.origin_dev.novlegend">
    <application
-        android:label="test_map"
-        android:icon="@mipmap/ic_launcher">
+        android:label="novlegend"
+        android:icon="@mipmap/launcher_icon">
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyCBt4V-1d8CU_hZcD8I5oajdolKow83GWQ"/>
         <activity

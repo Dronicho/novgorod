@@ -8,7 +8,6 @@ import 'package:test_map/src/domain/bloc/loading_cubit.dart';
 import 'package:test_map/src/domain/repository/auth.dart';
 import 'package:test_map/src/domain/repository/user.dart';
 import 'package:test_map/src/ui/home/home_page.dart';
-import 'package:test_map/src/ui/login/login.dart';
 import 'package:test_map/src/widgets/image_loader.dart';
 
 class App extends StatelessWidget {
@@ -70,10 +69,12 @@ class _AppViewState extends State<AppView> {
                   shadowColor: Colors.transparent,
                   foregroundColor: Colors.transparent,
                   textTheme: TextTheme(
-                    headline6: Theme.of(context)
-                        .textTheme
+                    headline6: GoogleFonts.ralewayTextTheme()
                         .headline6!
-                        .copyWith(color: Colors.black),
+                        .copyWith(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
                   ),
                   toolbarTextStyle: TextStyle(color: Colors.black),
                   titleTextStyle: TextStyle(color: Colors.black),

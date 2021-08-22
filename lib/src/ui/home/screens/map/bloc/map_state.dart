@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:test_map/src/domain/models/user.dart';
 
 abstract class MapState {}

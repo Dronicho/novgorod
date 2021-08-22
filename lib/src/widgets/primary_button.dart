@@ -61,10 +61,13 @@ class PrimaryButton extends StatelessWidget {
                                   ),
                                 )
                               : DefaultTextStyle(
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
                                   child: child,
                                 ))),
                 ),

@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:test_map/src/domain/models/user.dart';
 import 'package:test_map/src/domain/repository/base.dart';
 
@@ -40,24 +37,17 @@ class AuthenticationRepository extends BaseRepository {
     _controller.add(AuthenticationStatus.authenticated);
   }
 
-  Future<User?> register() async {
-    // print(state.user.localImage);
-    // var body =
-    //     state.user.copyWith(photoUrl: state.user.localImage?.url).toJson();
-    // print(body);
-    // body.addAll({'password': state.password});
-    // final res = await client.post(Uri.parse(api.baseUrl + '/user'), body: body);
-    // final data = jsonDecode(res.body);
-    // print(data);
-    // if (data['message'] == 'ok') {
-    //   storage.save(AUTH_SAVE_KEY, data['token']);
-    //   _controller.add(AuthenticationStatus.authenticated);
-    // }
+  Future<void> register(String username, String phone) async {
+    final res = await api.client
+        .post(api.baseUrl + '/user', data: {'name': username, 'phone': phone});
+    if (res.data['message'] == 'ok') {
+      await storage.prefs.setString(AUTH_SAVE_KEY, res.data['token']);
+      _controller.add(AuthenticationStatus.authenticated);
+    }
   }
 
   Future<User?> logIn({
     required String username,
-    required String password,
   }) async {
     final res =
         await api.client.post(api.baseUrl + '/auth', data: {'phone': username});
